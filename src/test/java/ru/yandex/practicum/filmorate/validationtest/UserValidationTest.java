@@ -24,12 +24,6 @@ class UserValidationTest {
     UserController controller;
     private Validator validator;
 
-
-    @BeforeAll
-    public static void launchApp() {
-        SpringApplication.run(FilmorateApplication.class);
-    }
-
     @BeforeEach
     void createTestData() {
         try (ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
