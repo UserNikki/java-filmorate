@@ -41,6 +41,7 @@ public class User {
         Class<? extends Payload>[] payload() default {};
     }
     public static class UserLoginValidator implements ConstraintValidator<LoginValidator,String> {
+        
         @Override
         public boolean isValid(String login, ConstraintValidatorContext context) {
             return !login.contains(" ");
