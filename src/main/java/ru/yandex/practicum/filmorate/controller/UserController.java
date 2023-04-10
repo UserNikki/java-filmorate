@@ -1,6 +1,4 @@
 package ru.yandex.practicum.filmorate.controller;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import lombok.extern.slf4j.Slf4j;
 import ru.yandex.practicum.filmorate.model.User;
@@ -33,8 +31,7 @@ public class UserController {
             if (userStorage.containsKey(user.getId())) {
                 log.info("User with id {} is already exist",user.getId());
                 throw new ValidationException("User is already exist");
-            }
-            else {
+            } else {
                 userStorage.put(user.getId(), user);
             }
         }
@@ -49,8 +46,7 @@ public class UserController {
         if (userStorage.containsKey(id)) {
             log.info("User {} is updated ", user.getName());
             userStorage.put(id,user);
-        }
-        else {
+        } else {
             log.info("User with id {} does not exist",user.getId());
             throw new ValidationException("User does not exist");
         }
