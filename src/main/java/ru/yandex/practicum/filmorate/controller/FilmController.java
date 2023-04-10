@@ -22,8 +22,7 @@ public class FilmController {
         if (filmStorage.containsKey(film.getId())) {
             log.info("Film with id {} is already exist",film.getId());
             throw new ValidationException("Film is already exist");
-        }
-        else {
+        } else {
             log.info("Film {} is added ", film.getName());
             filmStorage.put(film.getId(),film);
         }
@@ -35,8 +34,7 @@ public class FilmController {
         if (filmStorage.containsKey(id)) {
             log.info("Film {} is updated", film.getName());
             filmStorage.put(id,film);
-        }
-        else {
+        } else {
             log.info("Film with id {} does not exist",film.getId());
             throw new ValidationException("Film is already exist");
         }
@@ -48,8 +46,7 @@ public class FilmController {
         Film film;
         if (filmStorage.containsKey(id)) {
             film = filmStorage.get(id);
-        }
-        else {
+        } else {
             throw new ValidationException("Film with specified id does not exist");
         }
         return film;
