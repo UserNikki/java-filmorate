@@ -34,8 +34,7 @@ public class UserController {
             } else {
                 userStorage.put(user.getId(), user);
             }
-        }
-        catch (NullPointerException exp) {
+        } catch (NullPointerException exp) {
             exp.getStackTrace();
         }
         return user;
