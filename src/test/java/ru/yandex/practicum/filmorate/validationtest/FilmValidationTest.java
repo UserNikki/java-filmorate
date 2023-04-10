@@ -32,9 +32,7 @@ class FilmValidationTest {
         try (ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
             this.validator = factory.getValidator();
         }
-        this.correctDataFilm = new Film
-                (555,"Die Hard","Bruce Willis is killing bad guys",
-                        LocalDate.of(1990,11,11),90);
+        this.correctDataFilm = new Film(555,"Die Hard","Bruce Willis is killing bad guys",LocalDate.of(1990,11,11),90);
         this.controller = new FilmController();
     }
 
