@@ -35,8 +35,7 @@ class UserValidationTest {
         try (ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
             this.validator = factory.getValidator();
         }
-        this.correctUser = new User
-                (555,"qwerty@mail.com","login","Cool", LocalDate.of(2000,11,11));
+        this.correctUser = new User(555,"qwerty@mail.com","login","Cool", LocalDate.of(2000,11,11));
         this.controller = new UserController();
     }
 
