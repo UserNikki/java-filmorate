@@ -44,6 +44,7 @@ public class Film {
 
     public static class FilmReleaseDateValidator implements ConstraintValidator<ReleaseDateValidator,LocalDate> {
         private static final LocalDate EARLIEST_DATE = LocalDate.of(1895,12,27);
+        
         @Override
         public boolean isValid(LocalDate date, ConstraintValidatorContext context) {
             return date.isAfter(EARLIEST_DATE);
