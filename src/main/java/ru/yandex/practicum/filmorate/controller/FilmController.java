@@ -29,8 +29,8 @@ public class FilmController {
         return film;
     }
 
-    @PutMapping("/{id}")
-    public Film updateFilm(@Valid @RequestBody Film film, @PathVariable int id) {
+    @PutMapping
+    public Film updateFilm(@Valid @RequestBody Film film) {
         if (filmStorage.containsKey(id)) {
             log.info("Film {} is updated", film.getName());
             filmStorage.put(id,film);
