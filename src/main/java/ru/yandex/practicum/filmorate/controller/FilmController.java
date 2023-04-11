@@ -31,9 +31,9 @@ public class FilmController {
 
     @PutMapping
     public Film updateFilm(@Valid @RequestBody Film film) {
-        if (filmStorage.containsKey(id)) {
+        if (filmStorage.containsKey(film.getId())) {
             log.info("Film {} is updated", film.getName());
-            filmStorage.put(id,film);
+            filmStorage.put(film.getId(),film);
         } else {
             log.info("Film with id {} does not exist",film.getId());
             throw new ValidationException("Film is already exist");
