@@ -17,7 +17,6 @@ import java.lang.annotation.Target;
 import java.time.LocalDate;
 
 @Data
-@AllArgsConstructor
 public class Film {
 
     @Positive
@@ -32,6 +31,13 @@ public class Film {
     private LocalDate releaseDate;
     @Positive
     private Integer duration;
+
+    public Film(String name, String description, LocalDate releaseDate, Integer duration) {
+        this.name = name;
+        this.description = description;
+        this.releaseDate = releaseDate;
+        this.duration = duration;
+    }
 
     @Target({ElementType.FIELD})
     @Retention(RetentionPolicy.RUNTIME)

@@ -1,10 +1,7 @@
 package ru.yandex.practicum.filmorate.validationtest;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.SpringApplication;
-import ru.yandex.practicum.filmorate.FilmorateApplication;
 import ru.yandex.practicum.filmorate.controller.UserController;
 import ru.yandex.practicum.filmorate.model.User;
 
@@ -19,24 +16,21 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserValidationTest {
     /*ТЕСТЫ ПИСАЛ ИСХОДЯ ИЗ ТОГО, ЧТО ТЕСТИРУЕМ ВНУТРЕННЮЮ РЕАЛИЗАЦИЮ
      ВАЛИДАЦИИ ЧЕРЕЗ ЗАПРОСЫ К СЕРВЕРУ. Я ТАК ПОНЯЛ, ЧТО СМЫСЛ В ЭТОМ
+     а потом переписывал под постман тесты встроенные в гит в репо проекта
+     и узнал что такое разработка под тестирование так сказать)
+     если будут ошибки , то из-за переписывания под тесты, но вроде все норм
      */
     User correctUser;
     UserController controller;
     private Validator validator;
 
 
-    @BeforeAll
-    public static void launchApp() {
-        SpringApplication.run(FilmorateApplication.class);
-    }
-
     @BeforeEach
     void createTestData() {
         try (ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
             this.validator = factory.getValidator();
         }
-        this.correctUser = new User
-                (555,"qwerty@mail.com","login","Cool", LocalDate.of(2000,11,11));
+        this.correctUser = new User("login","name","qwerty@mail.ru",LocalDate.of(1990,1,1));
         this.controller = new UserController();
     }
 
@@ -55,35 +49,35 @@ class UserValidationTest {
     }
 
     @Test
-    void shouldReturnValidationErrorWhenNameIsNull() {
+    void shouldSetNameWhenNameIsNull() {
         correctUser.setName(null);
         controller.createUser(correctUser);
         Set<ConstraintViolation<User>> violations = validator.validate(correctUser);
-        assertEquals(1, violations.size());
+        assertEquals(0, violations.size());
     }
 
     @Test
     void shouldReturnValidationErrorWhenIdIsNegativeTest() {
-        correctUser.setId(-1);
         controller.createUser(correctUser);
+        correctUser.setId(-1);
         Set<ConstraintViolation<User>> violations = validator.validate(correctUser);
         assertEquals(1, violations.size());
     }
 
     @Test
     void shouldReturnValidationErrorWhenIdIs0Test() {
-        correctUser.setId(0);
         controller.createUser(correctUser);
+        correctUser.setId(0);
         Set<ConstraintViolation<User>> violations = validator.validate(correctUser);
         assertEquals(1, violations.size());
     }
 
     @Test
-    void shouldReturnValidationErrorWhenIdIsNullTest() {
+    void shouldSetIdWhenIdIsNullTest() {
         correctUser.setId(null);
         controller.createUser(correctUser);
         Set<ConstraintViolation<User>> violations = validator.validate(correctUser);
-        assertEquals(1, violations.size());
+        assertEquals(0, violations.size());
     }
 
     @Test

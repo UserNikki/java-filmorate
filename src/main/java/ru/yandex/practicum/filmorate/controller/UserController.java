@@ -17,35 +17,31 @@ public class UserController {
      ПРИШЛОСЬ САМОМУ СООБРАЖАТЬ С ВАЛИДАЦИЕЙ И
     ПИСАТЬ СВОИ АННОТАЦИИ Т.К. НАПИСАНИЕ ОБЫЧНОГО КОДА ДЛЯ ВАЛИДАЦИИ РУШИТ КРАСОТУ)
      ВСЕ РАВНО ДО КОНЦА НЕ РАЗОБРАЛСЯ ПОКА, НО ВСЕ РАБОТАЕТ.
-
      */
 
     private final Map<Integer,User> userStorage = new HashMap<>();
+    private Integer id = 1;
 
     @PostMapping
     public User createUser(@Valid @RequestBody User user) {
         try {
-            if (user.getName().isEmpty()) {
+            user.setId(generateId());
+            if (user.getName() == null || user.getName().isEmpty()) {
                 user.setName(user.getLogin());
             }
-            if (userStorage.containsKey(user.getId())) {
-                log.info("User with id {} is already exist",user.getId());
-                throw new ValidationException("User is already exist");
-            } else {
-                userStorage.put(user.getId(), user);
-            }
-        }
-        catch (NullPointerException exp) {
+            log.info("User {} is created ", user.getName());
+            userStorage.put(user.getId(), user);
+        } catch (NullPointerException exp) {
             exp.getStackTrace();
         }
         return user;
     }
 
-    @PutMapping("/{id}")
-    public User updateUser(@Valid @RequestBody User user, @PathVariable int id) {
-        if (userStorage.containsKey(id)) {
+    @PutMapping
+    public User updateUser(@Valid @RequestBody User user) {
+        if (userStorage.containsKey(user.getId())) {
             log.info("User {} is updated ", user.getName());
-            userStorage.put(id,user);
+            userStorage.put(user.getId(),user);
         } else {
             log.info("User with id {} does not exist",user.getId());
             throw new ValidationException("User does not exist");
@@ -58,4 +54,7 @@ public class UserController {
         return new ArrayList<>(userStorage.values());
     }
 
+    private int generateId() {
+        return id++;
+    }
 }
