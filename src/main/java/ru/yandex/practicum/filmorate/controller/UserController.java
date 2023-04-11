@@ -42,9 +42,9 @@ public class UserController {
 
     @PutMapping
     public User updateUser(@Valid @RequestBody User user) {
-        if (userStorage.containsKey(id)) {
+        if (userStorage.containsKey(user.getId())) {
             log.info("User {} is updated ", user.getName());
-            userStorage.put(id,user);
+            userStorage.put(user.getId(),user);
         } else {
             log.info("User with id {} does not exist",user.getId());
             throw new ValidationException("User does not exist");
