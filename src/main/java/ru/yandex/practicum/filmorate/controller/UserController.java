@@ -40,8 +40,8 @@ public class UserController {
         return user;
     }
 
-    @PutMapping("/{id}")
-    public User updateUser(@Valid @RequestBody User user, @PathVariable int id) {
+    @PutMapping
+    public User updateUser(@Valid @RequestBody User user) {
         if (userStorage.containsKey(id)) {
             log.info("User {} is updated ", user.getName());
             userStorage.put(id,user);
