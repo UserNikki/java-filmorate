@@ -14,12 +14,6 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserValidationTest {
-    /*ТЕСТЫ ПИСАЛ ИСХОДЯ ИЗ ТОГО, ЧТО ТЕСТИРУЕМ ВНУТРЕННЮЮ РЕАЛИЗАЦИЮ
-     ВАЛИДАЦИИ ЧЕРЕЗ ЗАПРОСЫ К СЕРВЕРУ. Я ТАК ПОНЯЛ, ЧТО СМЫСЛ В ЭТОМ
-     а потом переписывал под постман тесты встроенные в гит в репо проекта
-     и узнал что такое разработка под тестирование так сказать)
-     если будут ошибки , то из-за переписывания под тесты, но вроде все норм
-     */
     User correctUser;
     UserController controller;
     private Validator validator;

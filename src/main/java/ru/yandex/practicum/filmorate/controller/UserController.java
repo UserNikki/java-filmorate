@@ -13,27 +13,17 @@ import java.util.Map;
 @RestController
 @Slf4j
 public class UserController {
-    /* ПРИВЕТ. РЕШИЛ ВЫПОЛНИТЬ С ЗАДАНИЕМ СО * , НО Т.К НАМ НИЧЕГО В ТЕОРИИ ТОЛКОМ НЕ ОБЪЯСНИЛИ О ПРОЦЕССАХ ПОД КАПОТОМ
-     ПРИШЛОСЬ САМОМУ СООБРАЖАТЬ С ВАЛИДАЦИЕЙ И
-    ПИСАТЬ СВОИ АННОТАЦИИ Т.К. НАПИСАНИЕ ОБЫЧНОГО КОДА ДЛЯ ВАЛИДАЦИИ РУШИТ КРАСОТУ)
-     ВСЕ РАВНО ДО КОНЦА НЕ РАЗОБРАЛСЯ ПОКА, НО ВСЕ РАБОТАЕТ.
-     */
-
     private final Map<Integer,User> userStorage = new HashMap<>();
     private Integer id = 1;
 
     @PostMapping
     public User createUser(@Valid @RequestBody User user) {
-        try {
             user.setId(generateId());
             if (user.getName() == null || user.getName().isEmpty()) {
                 user.setName(user.getLogin());
             }
             log.info("User {} is created ", user.getName());
             userStorage.put(user.getId(), user);
-        } catch (NullPointerException exp) {
-            exp.getStackTrace();
-        }
         return user;
     }
 
