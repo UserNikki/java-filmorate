@@ -25,7 +25,7 @@ class UserValidationTest {
             this.validator = factory.getValidator();
         }
         this.correctUser = new User("login","name","qwerty@mail.ru",LocalDate.of(1990,1,1));
-        this.controller = new UserController();
+        //this.controller = new UserController();
     }
 
     @Test
