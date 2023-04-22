@@ -35,7 +35,7 @@ public class FilmService {
             filmStorage.update(film);
             log.info("Film {} updated", film.getName());
         } else {
-            log.info("Film with id {} does not exist",film.getId());
+            log.info("Film with id {} does not exist", film.getId());
             throw new NotFoundException("Film does not exist");
         }
         return film;
@@ -51,11 +51,11 @@ public class FilmService {
 
     public List<Film> getMostPopularByLike(String count) {
         /*ПРИВЕТ.ПОДСКАЖИ ПОЖАЛУЙСТА КАК ОТСОРТИРОВАТЬ.ЕДИНСТВЕННОЕ С ЧЕМ НЕ СПРАВЛЯЮСЬ
-        * Я ТАК ПОНЯЛ С ОДИНАКОВЫМ КОЛИЧЕСТВОМ ЛАЙКОВ НЕ ДОБАВЛЯЮТСЯ
-        * ПОЭТОМУ ПОСЛЕДНИЙ ТЕСТ НЕ ПРОХОДИТ.МОЖЕТ НУЖЕН ДОП ПАРАМЕТР ДЛЯ СОРТИРОВКИ
-        * ЕСЛИ ЛАЙКИ СОВПАДАЮТ ТО ПО ДОП ПАРАМЕТРУ, НО НЕ ЗНАЮ КАК СДЕЛАТЬ
-        * ПРОБОВАЛ, НО НЕ ПОЛУЧИЛОСЬ.ВЕСЬ ВЕЧЕР УБИЛ НА ОДИН ЭТОТ МЕТОД
-        * */
+         * Я ТАК ПОНЯЛ С ОДИНАКОВЫМ КОЛИЧЕСТВОМ ЛАЙКОВ НЕ ДОБАВЛЯЮТСЯ
+         * ПОЭТОМУ ПОСЛЕДНИЙ ТЕСТ НЕ ПРОХОДИТ.МОЖЕТ НУЖЕН ДОП ПАРАМЕТР ДЛЯ СОРТИРОВКИ
+         * ЕСЛИ ЛАЙКИ СОВПАДАЮТ ТО ПО ДОП ПАРАМЕТРУ, НО НЕ ЗНАЮ КАК СДЕЛАТЬ
+         * ПРОБОВАЛ, НО НЕ ПОЛУЧИЛОСЬ.ВЕСЬ ВЕЧЕР УБИЛ НА ОДИН ЭТОТ МЕТОД
+         * */
         final int quantity = Integer.parseInt(count);
         final Comparator<Film> comparator = Comparator.comparing(v -> v.getLikes().size());
         final Set<Film> filmSet = new TreeSet<>(comparator);
@@ -69,11 +69,11 @@ public class FilmService {
     }
 
     public void addLike(int id, int userId) {
-        filmStorage.like(id,userId);
+        filmStorage.like(id, userId);
     }
 
     public void deleteLike(int id, int userId) {
-        filmStorage.deleteLike(id,userId);
+        filmStorage.deleteLike(id, userId);
     }
 
     public List<Film> getFilms() {

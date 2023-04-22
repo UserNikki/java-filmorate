@@ -40,7 +40,7 @@ public class UserService {
             userStorage.update(user);
             log.info("User {} updated ", user.getName());
         } else {
-            log.info("User with id {} does not exist",user.getId());
+            log.info("User with id {} does not exist", user.getId());
             throw new NotFoundException("User does not exist");
         }
         return user;
@@ -52,7 +52,7 @@ public class UserService {
 
     public User getUser(int id) {
         if (userStorage.getById(id) == null) {
-            log.info("User id {} not found",id);
+            log.info("User id {} not found", id);
             throw new NotFoundException("User not found");
         }
         return userStorage.getById(id);
@@ -60,7 +60,7 @@ public class UserService {
 
     public void addNewFriend(int id, int friendId) {
         if (userStorage.isUserExist(id) && userStorage.isUserExist(friendId)) {
-            userStorage.addFriend(id,friendId);
+            userStorage.addFriend(id, friendId);
             log.info("User id " + id + " and user id " + friendId + " became friends");
         } else {
             throw new NotFoundException("User not found");
@@ -69,7 +69,7 @@ public class UserService {
 
     public void deleteFriend(int id, int friendId) {
         if (userStorage.isUserExist(id) && userStorage.isUserExist(friendId)) {
-            userStorage.delete(id,friendId);
+            userStorage.delete(id, friendId);
             log.info("User id " + id + " and user id " + friendId + " are not friends anymore");
         } else {
             throw new NotFoundException("User does not exist");
@@ -78,7 +78,7 @@ public class UserService {
 
     public List<User> getCommonFriends(int id, int otherId) {
         log.info("User id " + id + " and user id " + otherId + " looking for common friends");
-        return userStorage.commonFriends(id,otherId);
+        return userStorage.commonFriends(id, otherId);
     }
 
     public List<User> getFriends(int id) {
@@ -86,7 +86,7 @@ public class UserService {
             log.info("This dude has no friends");
             throw new NotFoundException("Friends list is empty");
         }
-        log.info("User id {} friends list requested",id);
+        log.info("User id {} friends list requested", id);
         return userStorage.allFriends(id);
     }
 

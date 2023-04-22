@@ -62,10 +62,10 @@ public class InMemoryUserStorage implements UserStorage {
         if (commonFriendsId.isEmpty()) {
             return Collections.emptyList();
         } else {
-               for (Integer i : commonFriendsId) {
-                   friendsList.add(userStorage.get(i));
-               }
+            for (Integer i : commonFriendsId) {
+                friendsList.add(userStorage.get(i));
             }
+        }
         return friendsList;
     }
 

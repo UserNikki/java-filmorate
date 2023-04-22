@@ -3,9 +3,7 @@ package ru.yandex.practicum.filmorate.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.FilmService;
 
 import javax.validation.Valid;
@@ -36,7 +34,7 @@ public class FilmController {
     public Film getUserById(@PathVariable int id) {
         log.info("Get film by id handler");
         return filmService.getFilmById(id);
-        }
+    }
 
     @GetMapping
     public List<Film> getAllFilms() {
@@ -46,13 +44,13 @@ public class FilmController {
     @PutMapping("/{id}/like/{userId}")
     public void like(@PathVariable int id, @PathVariable int userId) {
         log.info("Like handler");
-        filmService.addLike(id,userId);
+        filmService.addLike(id, userId);
     }
 
     @DeleteMapping("/{id}/like/{userId}")
     public void deleteLike(@PathVariable int id, @PathVariable int userId) {
         log.info("Delete like handler");
-        filmService.deleteLike(id,userId);
+        filmService.deleteLike(id, userId);
     }
 
     @GetMapping("/popular")
