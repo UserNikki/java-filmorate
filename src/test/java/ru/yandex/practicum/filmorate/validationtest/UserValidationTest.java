@@ -110,14 +110,6 @@ class UserValidationTest {
     }
 
     @Test
-    void shouldReturnValidationErrorWhenBirthDayIsTodayTest() {
-        correctUser.setBirthday(LocalDate.now());
-        controller.createUser(correctUser);
-        Set<ConstraintViolation<User>> violations = validator.validate(correctUser);
-        assertEquals(1, violations.size());
-    }
-
-    @Test
     void shouldReturnValidationErrorWhenBirthDayIsTomorrowTest() {
         correctUser.setBirthday(LocalDate.now().plusDays(1));
         controller.createUser(correctUser);

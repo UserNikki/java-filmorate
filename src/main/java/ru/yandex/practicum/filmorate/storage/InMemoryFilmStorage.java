@@ -1,20 +1,20 @@
 package ru.yandex.practicum.filmorate.storage;
 
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class InMemoryFilmStorage implements FilmStorage {
 
     private final Map<Integer, Film> filmStorage = new HashMap<>();
+    private Integer id = 1;
 
     @Override
     public Film add(Film film) {
+        film.setId(generateId());
         filmStorage.put(film.getId(), film);
         return film;
     }
@@ -32,7 +32,14 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     @Override
     public Film getFilm(int id) {
-        return filmStorage.get(id);
+        /*не совсем понял, так?
+        или в сигнатуру прям загнать Optional<Film> ???
+        а нужно это во всех слоях делать?
+        или здесь Optional<Film>, а в сервисе просто Film?
+        или и там и тут одинаково...хм
+         */
+        return Optional.ofNullable(filmStorage.get(id))
+                .orElseThrow(() -> new NotFoundException("Film not found"));
     }
 
     @Override
@@ -48,4 +55,9 @@ public class InMemoryFilmStorage implements FilmStorage {
     public boolean isFilmExist(int id) {
         return filmStorage.containsKey(id);
     }
+
+    private int generateId() {
+        return id++;
+    }
+
 }

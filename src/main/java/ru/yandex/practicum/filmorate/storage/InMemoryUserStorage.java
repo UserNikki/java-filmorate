@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.storage;
 
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.*;
@@ -11,9 +12,11 @@ import java.util.stream.Collectors;
 public class InMemoryUserStorage implements UserStorage {
 
     private final Map<Integer, User> userStorage = new HashMap<>();
+    private Integer id = 1;
 
     @Override
     public User create(User user) {
+        user.setId(generateId());
         userStorage.put(user.getId(), user);
         return user;
     }
@@ -31,10 +34,14 @@ public class InMemoryUserStorage implements UserStorage {
 
     @Override
     public User getById(int id) {
-        if (isUserExist(id)) {
-            return userStorage.get(id);
-        }
-        return null;
+        /*не совсем понял, так?
+        или в сигнатуру прям загнать Optional<Film> ???
+        а нужно это во всех слоях делать?
+        или здесь Optional<Film>, а в сервисе просто Film?
+        или и там и тут одинаково...хм
+         */
+        return Optional.ofNullable(userStorage.get(id))
+                .orElseThrow(() -> new NotFoundException("User not found"));
     }
 
     @Override
@@ -52,34 +59,27 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public List<User> commonFriends(int id, int otherId) {
+    public List<User> commonFriends(int id, int otherId) {//спасибо, так красивее намного
         Set<Integer> firstFriend = userStorage.get(id).getFriends();
         Set<Integer> secondFriend = userStorage.get(otherId).getFriends();
-        List<Integer> commonFriendsId = firstFriend.stream()
+        return firstFriend.stream()
                 .filter(secondFriend::contains)
+                .map(userStorage::get)
                 .collect(Collectors.toList());
-        List<User> friendsList = new ArrayList<>();
-        if (commonFriendsId.isEmpty()) {
-            return Collections.emptyList();
-        } else {
-            for (Integer i : commonFriendsId) {
-                friendsList.add(userStorage.get(i));
-            }
-        }
-        return friendsList;
     }
 
     @Override
     public List<User> allFriends(int id) {
-        List<User> friends = new ArrayList<>();
-        for (Integer friendId : userStorage.get(id).getFriends()) {
-            friends.add(userStorage.get(friendId));
-        }
-        return friends;
+        return userStorage.get(id).getFriends().stream()
+                .map(userStorage::get).collect(Collectors.toList());
     }
 
     public boolean isUserExist(int id) {
         return userStorage.containsKey(id);
+    }
+
+    private int generateId() {
+        return id++;
     }
 
 }
