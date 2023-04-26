@@ -8,11 +8,16 @@ import java.util.Optional;
 public interface FilmStorage {
 
     Film add(Film film);
+
     Film update(Film film);
+
     List<Film> getAll();
 
     Optional<Film> getFilm(int id);
+
     void like(int id, int userId);
+
     void deleteLike(int id, int userId);
+
     boolean isFilmExist(int id);
 }
