@@ -24,14 +24,10 @@ public class UserService {
     }
 
     public User updateExistingUser(User user) {
-        if (userStorage.isUserExist(user.getId())) {
-            setNameAslogin(user);
-            userStorage.update(user);
-            log.info("User updated {}", user);
-        } else {
-            log.info("User with id {} does not exist", user.getId());
-            throw new NotFoundException("User does not exist");
-        }
+        setNameAslogin(user);
+        userStorage.isUserExist(user.getId());
+        userStorage.update(user);
+        log.info("User updated {}", user);
         return user;
     }
 
@@ -44,21 +40,17 @@ public class UserService {
     }
 
     public void addNewFriend(int id, int friendId) {
-        if (userStorage.isUserExist(id) && userStorage.isUserExist(friendId)) {
-            userStorage.addFriend(id, friendId);
-            log.info("User id {} and user id {} became friends", id, friendId);
-        } else {
-            throw new NotFoundException("User not found");
-        }
+        userStorage.isUserExist(id);
+        userStorage.isUserExist(friendId);
+        userStorage.addFriend(id, friendId);
+        log.info("User id {} and user id {} became friends", id, friendId);
     }
 
     public void deleteFriend(int id, int friendId) {
-        if (userStorage.isUserExist(id) && userStorage.isUserExist(friendId)) {
-            userStorage.delete(id, friendId);
-            log.info("User id {} and user id {} are not friends anymore", id, friendId);
-        } else {
-            throw new NotFoundException("User does not exist");
-        }
+        userStorage.isUserExist(id);
+        userStorage.isUserExist(friendId);
+        userStorage.delete(id, friendId);
+        log.info("User id {} and user id {} are not friends anymore", id, friendId);
     }
 
     public List<User> getCommonFriends(int id, int otherId) {

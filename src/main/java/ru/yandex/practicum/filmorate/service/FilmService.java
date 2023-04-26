@@ -24,13 +24,9 @@ public class FilmService {
     }
 
     public Film updateExistingFilm(Film film) {
-        if (filmStorage.isFilmExist(film.getId())) {
-            filmStorage.update(film);
-            log.info("Film updated: {}", film);
-        } else {
-            log.info("Film with id {} does not exist", film.getId());
-            throw new NotFoundException("Film does not exist");
-        }
+        filmStorage.isFilmExist(film.getId());
+        filmStorage.update(film);
+        log.info("Film updated: {}", film);
         return film;
     }
 
