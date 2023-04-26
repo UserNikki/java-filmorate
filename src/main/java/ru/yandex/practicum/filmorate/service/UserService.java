@@ -7,8 +7,8 @@ import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -17,9 +17,7 @@ public class UserService {
     private final UserStorage userStorage;
 
     public User addUser(User user) {
-        if (user.getName() == null || user.getName().isEmpty()) {
-            user.setName(user.getLogin());
-        }
+        setNameAslogin(user);
         userStorage.create(user);
         log.info("User created {}:", user);
         return user;
@@ -27,6 +25,7 @@ public class UserService {
 
     public User updateExistingUser(User user) {
         if (userStorage.isUserExist(user.getId())) {
+            setNameAslogin(user);
             userStorage.update(user);
             log.info("User updated {}", user);
         } else {
@@ -41,8 +40,7 @@ public class UserService {
     }
 
     public User getUser(int id) {
-        return Optional.ofNullable(userStorage.getById(id))
-                .orElseThrow(() -> new NotFoundException("Film not found"));
+        return userStorage.getById(id).orElseThrow(() -> new NotFoundException("User not found"));
     }
 
     public void addNewFriend(int id, int friendId) {
@@ -69,11 +67,18 @@ public class UserService {
     }
 
     public List<User> getFriends(int id) {
-        if (userStorage.allFriends(id).isEmpty()) {
+        List<User> friends = new ArrayList<>(userStorage.allFriends(id));
+        if (friends.isEmpty()) {
             log.info("This dude has no friends");
             throw new NotFoundException("Friends list is empty");
         }
         log.info("User id {} friends list requested", id);
-        return userStorage.allFriends(id);
+        return friends;
+    }
+
+    private void setNameAslogin(User user) {
+        if (user.getName().isBlank()) {
+            user.setName(user.getLogin());
+        }
     }
 }

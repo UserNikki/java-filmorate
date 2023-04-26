@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.storage;
 
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.*;
@@ -33,23 +32,14 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User getById(int id) {
-        /*не совсем понял, так?
-        или в сигнатуру прям загнать Optional<Film> ???
-        а нужно это во всех слоях делать?
-        или здесь Optional<Film>, а в сервисе просто Film?
-        или и там и тут одинаково...хм
-         */
-        return Optional.ofNullable(userStorage.get(id))
-                .orElseThrow(() -> new NotFoundException("User not found"));
+    public Optional<User> getById(int id) {
+        return Optional.ofNullable(userStorage.get(id));
     }
 
     @Override
     public void addFriend(int id, int friendId) {
-        System.out.println("размер до" + userStorage.get(id).getFriends().size());
         userStorage.get(id).getFriends().add(friendId);
         userStorage.get(friendId).getFriends().add(id);
-        System.out.println("размер после" + userStorage.get(id).getFriends().size());
     }
 
     @Override
@@ -59,7 +49,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public List<User> commonFriends(int id, int otherId) {//спасибо, так красивее намного
+    public List<User> commonFriends(int id, int otherId) {
         Set<Integer> firstFriend = userStorage.get(id).getFriends();
         Set<Integer> secondFriend = userStorage.get(otherId).getFriends();
         return firstFriend.stream()

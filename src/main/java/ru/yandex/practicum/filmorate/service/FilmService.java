@@ -10,7 +10,6 @@ import ru.yandex.practicum.filmorate.storage.FilmStorage;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,22 +36,14 @@ public class FilmService {
     }
 
     public Film getFilmById(int id) {
-        return Optional.ofNullable(filmStorage.getFilm(id))
-                .orElseThrow(() -> new NotFoundException("Film not found"));
+        return filmStorage.getFilm(id).orElseThrow(() -> new NotFoundException("Film not found"));
     }
 
     public List<Film> getMostPopularByLike(int quantity) {
-        /*только так смог добиться нормальной сортировки
-        со сменой порядка.
-        в один стрим не заходит это все.
-        если знаешь как прям совсем норм сделать, будь добр , подскажи на будущее.
-         */
         log.info("The most popular films in the amount of: {}", quantity);
-        List<Film> films = filmStorage.getAll().stream()
-                .sorted(Comparator.comparing(v -> v.getLikes().size()))
-                .collect(Collectors.toList());
-        Collections.reverse(films);
-        return films.stream().limit(quantity).collect(Collectors.toList());
+        return filmStorage.getAll().stream()
+                .sorted(Comparator.comparing(Film::getCountLikes).reversed())
+                .limit(quantity).collect(Collectors.toList());
     }
 
     public void addLike(int id, int userId) {

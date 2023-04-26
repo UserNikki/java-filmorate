@@ -37,4 +37,8 @@ public class Film {
         this.releaseDate = releaseDate;
         this.duration = duration;
     }
+
+    public int getCountLikes() {
+        return this.likes.size();
+    }
 }

@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.storage;
 
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.util.*;
@@ -31,15 +30,8 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public Film getFilm(int id) {
-        /*не совсем понял, так?
-        или в сигнатуру прям загнать Optional<Film> ???
-        а нужно это во всех слоях делать?
-        или здесь Optional<Film>, а в сервисе просто Film?
-        или и там и тут одинаково...хм
-         */
-        return Optional.ofNullable(filmStorage.get(id))
-                .orElseThrow(() -> new NotFoundException("Film not found"));
+    public Optional<Film> getFilm(int id) {
+        return Optional.ofNullable(filmStorage.get(id));
     }
 
     @Override
