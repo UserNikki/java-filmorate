@@ -6,6 +6,7 @@ import ru.yandex.practicum.filmorate.controller.FilmController;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
+import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -29,7 +30,7 @@ class FilmValidationTest {
             this.validator = factory.getValidator();
         }
         this.correctDataFilm = new Film("Die Hard", "Bruce Willis is killing bad guys", LocalDate.of(1990, 11, 11), 90);
-        this.controller = new FilmController(new FilmService(new InMemoryFilmStorage()));
+        this.controller = new FilmController(new FilmService(new InMemoryFilmStorage(),new InMemoryUserStorage()));
     }
 
     @Test
