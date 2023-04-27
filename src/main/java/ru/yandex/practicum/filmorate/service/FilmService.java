@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.util.Comparator;
 import java.util.List;
@@ -16,6 +17,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FilmService {
     private final FilmStorage filmStorage;
+    private final UserStorage userStorage;
+
 
     public Film addNewFilm(Film film) {
         filmStorage.add(film);
@@ -42,13 +45,19 @@ public class FilmService {
     }
 
     public void addLike(int id, int userId) {
-        log.info("Film id: {} like from user: {} ", id, userId);
+        filmStorage.isFilmExist(id);
+        userStorage.isUserExist(userId);
         filmStorage.like(id, userId);
+        log.info("Film id: {} like from user: {} ", id, userId);
     }
 
     public void deleteLike(int id, int userId) {
-        log.info("Film id: {} minus like from user: {} ", id, userId);
-        filmStorage.deleteLike(id, userId);
+        if (getFilmById(id).getLikes().contains(userId)) {
+            filmStorage.deleteLike(id, userId);
+            log.info("Film id: {} minus like from user: {} ", id, userId);
+        } else {
+            throw new NotFoundException("Film does not contain like from user id: " + userId);
+        }
     }
 
     public List<Film> getFilms() {
