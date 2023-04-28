@@ -1,24 +1,30 @@
 package ru.yandex.practicum.filmorate.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import ru.yandex.practicum.filmorate.validators.LoginValidator;
+
 import javax.validation.constraints.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 public class User {
-
     @Positive
     private Integer id;
-    @NotEmpty
+    @NotBlank
     @LoginValidator
     private String login;
     private String name;
     @Email(message = "Email is not valid")
-    @NotEmpty
+    @NotBlank
     private String email;
-    @Past
+    @PastOrPresent
+    @NotNull
     private LocalDate birthday;
+    @JsonIgnore
+    private Set<Integer> friends = new HashSet<>();
 
     public User(String login, String name, String email, LocalDate birthday) {
         this.login = login;
