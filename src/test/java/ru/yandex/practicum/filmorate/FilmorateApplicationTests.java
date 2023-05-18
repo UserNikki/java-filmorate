@@ -36,8 +36,7 @@ class FilmorateApplicationTests {
     @Test
     @Order(1)
     public void testCreateUser() {
-        User testUser = new User
-                ("testlogin", "testname", "email@.ru", LocalDate.of(1980, 12, 12));
+        User testUser = new User("testlogin", "testname", "email@.ru", LocalDate.of(1980, 12, 12));
         userStorage.create(testUser);
         assertThat(testUser).hasFieldOrPropertyWithValue("id", 1);
     }
@@ -58,8 +57,7 @@ class FilmorateApplicationTests {
     @Test
     @Order(3)
     public void updateUser() {
-        userStorage.update(new User(1, "updatedlogin", "updatedname", "updatedemail@.ru",
-                LocalDate.of(1980, 12, 13)));
+        userStorage.update(new User(1, "updatedlogin", "updatedname", "updatedemail@.ru", LocalDate.of(1980, 12, 13)));
         User toCompare = userStorage.getById(1);
         assertEquals(toCompare.getId(), 1);
         assertEquals(toCompare.getLogin(), "updatedlogin");
@@ -77,8 +75,7 @@ class FilmorateApplicationTests {
     @Test
     @Order(5)
     public void addFriendTest() {
-        User friend = new User("friendlogin", "friendname", "friendemail@.ru",
-                LocalDate.of(1990, 1, 10));
+        User friend = new User("friendlogin", "friendname", "friendemail@.ru", LocalDate.of(1990, 1, 10));
         userStorage.create(friend);
         userStorage.addFriend(1, 2);
         assertEquals(1, userStorage.allFriends(1).size());
@@ -94,8 +91,7 @@ class FilmorateApplicationTests {
     @Test
     @Order(6)
     public void commonFriendsTest() {
-        User anotherOneFriend = new User("Thirdfriendlogin", "Thirdfriendname", "Thirdfriendemail@.ru",
-                LocalDate.of(1999, 1, 10));
+        User anotherOneFriend = new User("Thirdfriendlogin", "Thirdfriendname", "Thirdfriendemail@.ru", LocalDate.of(1999, 1, 10));
         userStorage.create(anotherOneFriend);
         userStorage.addFriend(3, 2);
         List<User> commonFriends = userStorage.commonFriends(1, 3);
