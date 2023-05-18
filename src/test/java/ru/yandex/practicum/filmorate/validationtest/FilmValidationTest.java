@@ -53,8 +53,7 @@ class FilmValidationTest {
         try (ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
             this.validator = factory.getValidator();
         }
-        this.correctDataFilm = new Film("Die Hard", "Bruce Willis is killing bad guys",
-                LocalDate.of(1990, 11, 11), 90, new HashSet<>(), new Mpa(1, "G"), new LinkedHashSet<>());
+        this.correctDataFilm = new Film("Die Hard", "Bruce Willis is killing bad guys", LocalDate.of(1990, 11, 11), 90, new HashSet<>(), new Mpa(1, "G"), new LinkedHashSet<>());
         this.embeddedDatabase = new EmbeddedDatabaseBuilder()
                 .addDefaultScripts()
                 .setType(EmbeddedDatabaseType.H2)

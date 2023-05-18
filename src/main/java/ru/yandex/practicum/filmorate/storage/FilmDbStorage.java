@@ -55,8 +55,7 @@ public class FilmDbStorage implements FilmStorage {
                 "duration = ?," +
                 "mpa_id = ?" +
                 "WHERE film_id = ?";
-        jdbcTemplate.update(sqlQuery, film.getName(), film.getDescription(), film.getReleaseDate()
-                , film.getDuration(), film.getMpa().getId(), film.getId());
+        jdbcTemplate.update(sqlQuery, film.getName(), film.getDescription(), film.getReleaseDate(), film.getDuration(), film.getMpa().getId(), film.getId());
         return film;
     }
 

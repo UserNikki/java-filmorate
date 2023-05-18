@@ -1,5 +1,4 @@
 package ru.yandex.practicum.filmorate;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.MethodOrderer;
@@ -8,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.model.User;
@@ -58,9 +58,8 @@ class FilmorateApplicationTests {
     @Test
     @Order(3)
     public void updateUser() {
-        userStorage.update(new User
-                (1, "updatedlogin", "updatedname", "updatedemail@.ru",
-                        LocalDate.of(1980, 12, 13)));
+        userStorage.update(new User(1, "updatedlogin", "updatedname", "updatedemail@.ru",
+                LocalDate.of(1980, 12, 13)));
         User toCompare = userStorage.getById(1);
         assertEquals(toCompare.getId(), 1);
         assertEquals(toCompare.getLogin(), "updatedlogin");
@@ -78,9 +77,8 @@ class FilmorateApplicationTests {
     @Test
     @Order(5)
     public void addFriendTest() {
-        User friend = new User
-                ("friendlogin", "friendname", "friendemail@.ru",
-                        LocalDate.of(1990, 1, 10));
+        User friend = new User("friendlogin", "friendname", "friendemail@.ru",
+                LocalDate.of(1990, 1, 10));
         userStorage.create(friend);
         userStorage.addFriend(1, 2);
         assertEquals(1, userStorage.allFriends(1).size());
@@ -96,9 +94,8 @@ class FilmorateApplicationTests {
     @Test
     @Order(6)
     public void commonFriendsTest() {
-        User anotherOneFriend = new User
-                ("Thirdfriendlogin", "Thirdfriendname", "Thirdfriendemail@.ru",
-                        LocalDate.of(1999, 1, 10));
+        User anotherOneFriend = new User("Thirdfriendlogin", "Thirdfriendname", "Thirdfriendemail@.ru",
+                LocalDate.of(1999, 1, 10));
         userStorage.create(anotherOneFriend);
         userStorage.addFriend(3, 2);
         List<User> commonFriends = userStorage.commonFriends(1, 3);
@@ -108,8 +105,7 @@ class FilmorateApplicationTests {
     @Test
     @Order(8)
     public void addFilmTest() {
-        Film testFilm = new Film("Name", "Description", LocalDate.of(2000, 1, 1), 100,
-                new HashSet<>(), new Mpa(2, "PG"), new LinkedHashSet<>());
+        Film testFilm = new Film("Name", "Description", LocalDate.of(2000, 1, 1), 100, new HashSet<>(), new Mpa(2, "PG"), new LinkedHashSet<>());
         filmStorage.add(testFilm);
         assertThat(testFilm).hasFieldOrPropertyWithValue("id", 1);
     }
@@ -133,9 +129,7 @@ class FilmorateApplicationTests {
     @Test
     @Order(10)
     public void updateFilmTest() {
-        filmStorage.update(new Film(1, "UpdatedName", "UpdatedDescription",
-                LocalDate.of(2000, 2, 2), 111,
-                new HashSet<>(), new Mpa(1, "G"), new LinkedHashSet<>()));
+        filmStorage.update(new Film(1, "UpdatedName", "UpdatedDescription", LocalDate.of(2000, 2, 2), 111, new HashSet<>(), new Mpa(1, "G"), new LinkedHashSet<>()));
         Film film = filmStorage.getFilm(1);
         assertEquals("UpdatedName", film.getName());
         assertEquals("UpdatedDescription", film.getDescription());
