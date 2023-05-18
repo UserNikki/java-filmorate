@@ -3,7 +3,6 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
@@ -14,7 +13,9 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class UserService {
+
     private final UserStorage userStorage;
+
 
     public User addUser(User user) {
         setNameAslogin(user);
@@ -36,7 +37,8 @@ public class UserService {
     }
 
     public User getUser(int id) {
-        return userStorage.getById(id).orElseThrow(() -> new NotFoundException("User not found"));
+        userStorage.isUserExist(id);
+        return userStorage.getById(id);
     }
 
     public void addNewFriend(int id, int friendId) {
@@ -60,10 +62,6 @@ public class UserService {
 
     public List<User> getFriends(int id) {
         List<User> friends = new ArrayList<>(userStorage.allFriends(id));
-        if (friends.isEmpty()) {
-            log.info("This dude has no friends");
-            throw new NotFoundException("Friends list is empty");
-        }
         log.info("User id {} friends list requested", id);
         return friends;
     }
