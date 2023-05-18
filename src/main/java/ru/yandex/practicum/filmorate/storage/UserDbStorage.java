@@ -23,6 +23,7 @@ public class UserDbStorage implements UserStorage {
     private final JdbcTemplate jdbcTemplate;
     /*Привет. Очень прошу по возможности основные замечания постараться сразу дать, чтобы за пару
     проверок сдать. Мне просто отъехать надо будет на днях.
+    Тяжелое заданице))
      */
 
     @Autowired
