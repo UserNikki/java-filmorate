@@ -16,9 +16,6 @@ target/
 mvnw
 mvnw.cmd
 /.mvn/
-*.class
-*.jar
-*.DS_Store
 
 ### IntelliJ IDEA ###
 .idea
