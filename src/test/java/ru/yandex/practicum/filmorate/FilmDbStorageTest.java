@@ -12,7 +12,9 @@ import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.Mpa;
+import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -28,12 +30,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class FilmDbStorageTest {
-    /*ПРИВЕТ. ВНИМАНИЕ!!!
-    ВСЕ ТЕСТЫ КЛАССОВ ХРАНИЛИЩ БАЗЫ ДАННЫХ ЗАПУСКАЮТСЯ РАЗОМ
-    ПУТЕМ ЗАПУСКА FilmorateApplicationTests КЛАССА. ПОЗВОЛИЛ СЕБЕ ВОЛЬНОСТЬ ВСЕ ОБЪЕДЕНИТЬ ДЛЯ УДОБСТВА.
-     */
 
     private final FilmStorage filmStorage;
+    private final UserStorage userStorage;
+
 
     @Test
     @Order(1)
@@ -80,6 +80,7 @@ class FilmDbStorageTest {
     @Test
     @Order(5)
     public void likeFilmTest() {
+        userStorage.create(new User("login", "name", "email@.ru", LocalDate.of(1988, 10, 19)));
         filmStorage.like(1, 1);
         Film film = filmStorage.getFilm(1);
         assertEquals(1, film.getLikes().size());

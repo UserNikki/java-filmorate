@@ -19,10 +19,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @AutoConfigureTestDatabase
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 class GenreDbStorageTest {
-    /*ПРИВЕТ. ВНИМАНИЕ!!!
-    ВСЕ ТЕСТЫ КЛАССОВ ХРАНИЛИЩ БАЗЫ ДАННЫХ ЗАПУСКАЮТСЯ РАЗОМ
-    ПУТЕМ ЗАПУСКА FilmorateApplicationTests КЛАССА. ПОЗВОЛИЛ СЕБЕ ВОЛЬНОСТЬ ВСЕ ОБЪЕДЕНИТЬ ДЛЯ УДОБСТВА.
-     */
 
     private final GenreStorage genreStorage;
 

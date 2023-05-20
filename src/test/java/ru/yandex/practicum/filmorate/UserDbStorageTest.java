@@ -23,10 +23,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UserDbStorageTest {
-    /*ПРИВЕТ. ВНИМАНИЕ!!!
-    ВСЕ ТЕСТЫ КЛАССОВ ХРАНИЛИЩ БАЗЫ ДАННЫХ ЗАПУСКАЮТСЯ РАЗОМ
-    ПУТЕМ ЗАПУСКА FilmorateApplicationTests КЛАССА. ПОЗВОЛИЛ СЕБЕ ВОЛЬНОСТЬ ВСЕ ОБЪЕДЕНИТЬ ДЛЯ УДОБСТВА.
-     */
 
     private final UserStorage userStorage;
 
