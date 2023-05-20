@@ -2,10 +2,17 @@ package ru.yandex.practicum.filmorate.validationtest;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import ru.yandex.practicum.filmorate.controller.UserController;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
-import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.UserDbStorage;
+import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -16,10 +23,16 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@SpringBootTest
+@AutoConfigureTestDatabase
 class UserValidationTest {
     User correctUser;
     UserController controller;
     private Validator validator;
+    private UserStorage userStorage;
+    private UserService userService;
+    private JdbcTemplate jdbcTemplate;
+    private EmbeddedDatabase embeddedDatabase;
 
 
     @BeforeEach
@@ -27,8 +40,16 @@ class UserValidationTest {
         try (ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
             this.validator = factory.getValidator();
         }
-        this.correctUser = new User("login", "name", "qwerty@mail.ru", LocalDate.of(1990, 1, 1));
-        this.controller = new UserController(new UserService(new InMemoryUserStorage()));
+
+        this.embeddedDatabase = new EmbeddedDatabaseBuilder()
+                .addDefaultScripts()
+                .setType(EmbeddedDatabaseType.H2)
+                .build();
+        this.jdbcTemplate = new JdbcTemplate(embeddedDatabase);
+        this.userStorage = new UserDbStorage(this.jdbcTemplate);
+        this.userService = new UserService(this.userStorage);
+        this.correctUser = new User(555, "login", "name", "qwerty@mail.ru", LocalDate.of(1990, 1, 1));
+        this.controller = new UserController(this.userService);
     }
 
     @Test
