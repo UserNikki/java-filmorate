@@ -22,10 +22,12 @@ import java.util.Objects;
 @Component
 public class FilmDbStorage implements FilmStorage {
     private final JdbcTemplate jdbcTemplate;
+    private final GenreStorage genreStorage;
 
     @Autowired
-    public FilmDbStorage(JdbcTemplate jdbcTemplate) {
+    public FilmDbStorage(JdbcTemplate jdbcTemplate, GenreStorage genreStorage) {
         this.jdbcTemplate = jdbcTemplate;
+        this.genreStorage = genreStorage;
     }
 
 
@@ -84,12 +86,13 @@ public class FilmDbStorage implements FilmStorage {
     }
 
     @Override
-    public void isFilmExist(int id) {
+    public boolean isFilmExist(int id) {
         String sqlQuery = "SELECT film_id FROM films WHERE film_id = ?";
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sqlQuery, id);
         if (!rowSet.next()) {
             throw new NotFoundException("Film id: " + id + " does not exist...");
         }
+        return true;
     }
 
     @Override
@@ -97,7 +100,7 @@ public class FilmDbStorage implements FilmStorage {
         String sqlQueryGenres = "INSERT INTO genres_films (film_id,genre_id) VALUES (?,?)";
         if (film.getGenres() != null) {
             for (Genre genre : film.getGenres()) {
-                this.isGenreExist(genre.getId());
+                genreStorage.isGenreExist(genre.getId());
                 jdbcTemplate.update(sqlQueryGenres, film.getId(), genre.getId());
             }
         }
@@ -110,27 +113,6 @@ public class FilmDbStorage implements FilmStorage {
         this.createGenreForFilm(film);
     }
 
-    public List<Genre> getAllGenres() {
-        String sqlQuery = "SELECT * FROM genres";
-        return jdbcTemplate.query(sqlQuery, this::makeGenre);
-
-    }
-
-    public Genre getGenreById(int id) {
-        this.isGenreExist(id);
-        String sqlQuery = "SELECT * FROM genres WHERE genre_id = ?";
-        return jdbcTemplate.queryForObject(sqlQuery, this::makeGenre, id);
-    }
-
-    @Override
-    public void isGenreExist(int id) {
-        String sqlQuery = "SELECT name FROM genres WHERE genre_id = ?";
-        SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sqlQuery, id);
-        if (!rowSet.next()) {
-            throw new NotFoundException("Genre id: " + id + " does not exist...");
-        }
-    }
-
     private Genre makeGenre(ResultSet rs, int rowNum) throws SQLException {
         return new Genre(rs.getInt("genre_id"), rs.getString("name"));
     }
@@ -139,24 +121,6 @@ public class FilmDbStorage implements FilmStorage {
         return new Mpa(rs.getInt("mpa_id"), rs.getString("name"));
     }
 
-    public void isMpaExist(int id) {
-        String sqlQuery = "SELECT name FROM rating WHERE mpa_id = ?";
-        SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sqlQuery, id);
-        if (!rowSet.next()) {
-            throw new NotFoundException("Mpa id: " + id + " does not exist...");
-        }
-    }
-
-    public List<Mpa> getAllMpa() {
-        String sqlQuery = "SELECT * FROM rating";
-        return jdbcTemplate.query(sqlQuery, this::makeMpa);
-    }
-
-    public Mpa getMpaById(int id) {
-        this.isMpaExist(id);
-        String sqlQuery = "SELECT * FROM rating WHERE mpa_id = ?";
-        return jdbcTemplate.queryForObject(sqlQuery, this::makeMpa, id);
-    }
 
     private Film makeFilm(ResultSet rs, int rowNum) throws SQLException {
         int mpaId = rs.getInt("mpa_id");

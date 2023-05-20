@@ -12,7 +12,7 @@ public interface UserStorage {
 
     List<User> getAll();
 
-    void isUserExist(int id);
+    boolean isUserExist(int id);
 
     User getById(int id);
 

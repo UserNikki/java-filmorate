@@ -1,8 +1,6 @@
 package ru.yandex.practicum.filmorate.storage;
 
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.Genre;
-import ru.yandex.practicum.filmorate.model.Mpa;
 
 import java.util.List;
 
@@ -20,21 +18,10 @@ public interface FilmStorage {
 
     void deleteLike(int id, int userId);
 
-    void isFilmExist(int id);
-
-    List<Genre> getAllGenres();
-
-    Genre getGenreById(int id);
+    boolean isFilmExist(int id);
 
     void createGenreForFilm(Film film);
 
     void updateGenreForFilm(Film film);
 
-    List<Mpa> getAllMpa();
-
-    Mpa getMpaById(int id);
-
-    void isGenreExist(int id);
-
-    void isMpaExist(int id);
 }

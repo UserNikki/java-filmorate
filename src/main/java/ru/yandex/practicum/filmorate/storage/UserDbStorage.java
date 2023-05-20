@@ -21,10 +21,6 @@ import java.util.stream.Collectors;
 public class UserDbStorage implements UserStorage {
 
     private final JdbcTemplate jdbcTemplate;
-    /*Привет. Очень прошу по возможности основные замечания постараться сразу дать, чтобы за пару
-    проверок сдать. Мне просто отъехать надо будет на днях.
-    Тяжелое заданице оказалось)
-     */
 
     @Autowired
     public UserDbStorage(JdbcTemplate jdbcTemplate) {
@@ -66,12 +62,13 @@ public class UserDbStorage implements UserStorage {
     }
 
     @Override
-    public void isUserExist(int id) {
+    public boolean isUserExist(int id) {
         String sqlQuery = "SELECT user_id FROM users WHERE user_id = ?";
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sqlQuery, id);
         if (!rowSet.next()) {
             throw new NotFoundException("User id: " + id + " does not exist...");
         }
+        return true;
     }
 
     @Override

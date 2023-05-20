@@ -16,10 +16,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.service.FilmService;
 import ru.yandex.practicum.filmorate.service.UserService;
-import ru.yandex.practicum.filmorate.storage.FilmDbStorage;
-import ru.yandex.practicum.filmorate.storage.FilmStorage;
-import ru.yandex.practicum.filmorate.storage.UserDbStorage;
-import ru.yandex.practicum.filmorate.storage.UserStorage;
+import ru.yandex.practicum.filmorate.storage.*;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -45,6 +42,8 @@ class FilmValidationTest {
     private UserStorage userStorage;
     private UserService userService;
     private JdbcTemplate jdbcTemplate;
+    private GenreStorage genreStorage;
+    private MpaStorage mpaStorage;
     private EmbeddedDatabase embeddedDatabase;
 
 
@@ -61,8 +60,8 @@ class FilmValidationTest {
         this.jdbcTemplate = new JdbcTemplate(embeddedDatabase);
         this.userStorage = new UserDbStorage(this.jdbcTemplate);
         this.userService = new UserService(this.userStorage);
-        this.filmStorage = new FilmDbStorage(this.jdbcTemplate);
-        this.filmService = new FilmService(this.filmStorage, this.userStorage);
+        this.filmStorage = new FilmDbStorage(this.jdbcTemplate, this.genreStorage);
+        this.filmService = new FilmService(this.filmStorage, this.userStorage, this.mpaStorage);
         this.controller = new FilmController(filmService);
     }
 

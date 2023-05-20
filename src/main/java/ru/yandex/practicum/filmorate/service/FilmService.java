@@ -5,9 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.Genre;
-import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.MpaStorage;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.util.Comparator;
@@ -21,8 +20,10 @@ public class FilmService {
     private final FilmStorage filmStorage;
     private final UserStorage userStorage;
 
+    private final MpaStorage mpaStorage;
+
     public Film addNewFilm(Film film) {
-        filmStorage.isMpaExist(film.getMpa().getId());
+        mpaStorage.isMpaExist(film.getMpa().getId());
         filmStorage.add(film);
         filmStorage.createGenreForFilm(film);
         log.info("Film added: {}", film);
@@ -32,7 +33,7 @@ public class FilmService {
     public Film updateExistingFilm(Film film) {
         filmStorage.isFilmExist(film.getId());
         filmStorage.updateGenreForFilm(film);
-        filmStorage.isMpaExist(film.getMpa().getId());
+        mpaStorage.isMpaExist(film.getMpa().getId());
         filmStorage.update(film);
         log.info("Film updated: {}", film);
         return film;
@@ -67,22 +68,8 @@ public class FilmService {
     }
 
     public List<Film> getFilms() {
+        log.info("Get all films service method");
         return filmStorage.getAll();
     }
 
-    public List<Genre> getAllGenres() {
-        return filmStorage.getAllGenres();
-    }
-
-    public Genre getGenreById(int id) {
-        return filmStorage.getGenreById(id);
-    }
-
-    public List<Mpa> getAllMpa() {
-        return filmStorage.getAllMpa();
-    }
-
-    public Mpa getMpaById(int id) {
-        return filmStorage.getMpaById(id);
-    }
 }
