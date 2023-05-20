@@ -58,6 +58,7 @@ class FilmValidationTest {
                 .setType(EmbeddedDatabaseType.H2)
                 .build();
         this.jdbcTemplate = new JdbcTemplate(embeddedDatabase);
+        this.mpaStorage = new MpaDbStorage(this.jdbcTemplate);
         this.userStorage = new UserDbStorage(this.jdbcTemplate);
         this.userService = new UserService(this.userStorage);
         this.filmStorage = new FilmDbStorage(this.jdbcTemplate, this.genreStorage);
